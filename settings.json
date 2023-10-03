@@ -1,0 +1,17 @@
+{
+    "files.autoSave": "afterDelay",
+    "editor.fontFamily": "'Fira Code Light', 'Droid Sans Mono', 'monospace', monospace",
+    "editor.cursorBlinking": "phase",
+    "editor.fontLigatures": true,
+    "workbench.iconTheme": "material-icon-theme",
+    "workbench.startupEditor": "none",
+    "editor.minimap.enabled": false,
+    "explorer.confirmDelete": false,
+    "git.enableSmartCommit": true,
+    "git.autofetch": true,
+    "git.confirmSync": false,
+    "auto-rename-tag.activationOnLanguage": [
+        "html",
+        "markdown"
+    ]
+}
