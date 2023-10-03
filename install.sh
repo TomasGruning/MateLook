@@ -1,16 +1,29 @@
 #!/bin/bash
 chmod +x "$0"
 
+theme=canta
+set=0
+while getopts ":s:t:" option; do
+  case $option in
+    t)
+      theme="$OPTARG"
+      ;;
+    :)
+      set=1
+      ;;
+    *)
+      echo -e "\n\nUso: $0 [canta|dracula|cloudy] -t (elejir tema)"
+      echo -e "                                         -s (no descargar los recursos)\n"  
+      exit 1
+  esac
+done
+shift $((OPTIND-1))
+
 # Verifica que se haya proporcionado un argumento válido
-if ([ "$1" != "canta" ] && [ "$1" != "dracula" ] && [ "$1" != "cloudy" ]); then
+if ([ "$theme" != "canta" ] && [ "$theme" != "dracula" ] && [ "$theme" != "cloudy" ]); then
   echo -e "\nUso: $0 [canta|dracula|cloudy]\n"
   echo -e "\"                                   \" -s (para no descargar los recursos)\n"  
   exit 1
-fi
-
-set=$false
-if [ "$2" == "-s" ]; then
-  set=$true
 fi
 
 # Función para descargar e instalar la fuente Fira Code
@@ -45,26 +58,26 @@ instalar_extensiones_vscode() {
 }
 
 # Asigna valores según la opción seleccionada
-if [ "$1" == "canta" ]; then
-  library="Canta"
-  gtk="Canta-dark"
-  icons_color="green"
-  cursor="oreo_spark_green_cursors"
-  new_color_theme="Monokai +Green"
-
-elif [ "$1" == "dracula" ]; then
+if [ "$theme" == "dracula" ]; then
   library="Dracula"
   gtk="Dracula-alt-style"
   icons_color="indigo"
   cursor="Dracula-cursors"
   new_color_theme="Monokai +Purple"
   
-elif [ "$1" == "cloudy" ]; then
+elif [ "$theme" == "cloudy" ]; then
   library="Cloudy"
   gtk="Cloudy-Solid-Grey-Dark"
   icons_color="grey"
   cursor="capitaine-cursors-light-r3"
   new_color_theme="Monokai +Graphite"
+
+else
+  library="Canta"
+  gtk="Canta-dark"
+  icons_color="green"
+  cursor="oreo_spark_green_cursors"
+  new_color_theme="Monokai +Green"
 
 fi
 
@@ -75,7 +88,7 @@ rm -f ~/Descargas/Mars.jar
 # Resto del script (código para configurar temas, íconos, fondos, etc.)
 
 # Instala el paquete de iconos
-if [ !$set ]; then
+if [ $set == 0 ]; then
   wget -qO- https://git.io/papirus-icon-theme-install | DESTDIR="$HOME/.icons" sh
   wget -qO- https://git.io/papirus-folders-install | env PREFIX=$HOME/.local sh
 fi
@@ -84,7 +97,7 @@ bash /home/estudiantes/.local/bin/papirus-folders -C "$icons_color"
 cp -R "$(dirname "$0")/$library/$gtk" ~/.themes
 cp -R "$(dirname "$0")/$library/$cursor" ~/.icons
 
-if [ !$set ]; then
+if [ $set == 0 ]; then
   instalar_fira_code
 fi
 
@@ -107,7 +120,7 @@ dconf write /org/mate/terminal/profiles/default/cursor-shape "'ibeam'"
 dconf write /org/mate/terminal/profiles/default/scrollbar-position "'hidden'"
 echo -e "\n Terminal Configurada\n\n"
 
-if [ !$set ]; then
+if [ $set == 0 ]; then
   instalar_extensiones_vscode
 fi
 

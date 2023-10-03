@@ -21,13 +21,11 @@ Primero hay que cambiar los permisos del script
 ```bash
 chmod +x install.sh
 ```
+Por defecto se instala el tema _Canta_, se puede cambiar con la flag `-t`
 
 ```bash
-./install.sh [dracula|canta|cloudy]
+./install.sh -t [dracula|canta|cloudy]
 ```
 
-Se puede agregar el argumento `-s` para no volver a instalar de vuelta los recursos 
-
-```bash
-./install.sh [dracula|canta|cloudy] -s
-```
+> [!NOTE]
+>Se puede agregar el argumento `-s` para no volver a instalar de vuelta los recursos 
