@@ -2,7 +2,7 @@
 chmod +x "$0"
 
 # Verifica que se haya proporcionado un argumento válido
-if [ "$#" -ne 2 ] || ([ "$1" != "canta" ] && [ "$1" != "dracula" ] && [ "$1" != "cloudy" ]); then
+if [ "$#" -ne 1 ] || ([ "$1" != "canta" ] && [ "$1" != "dracula" ] && [ "$1" != "cloudy" ]); then
   echo -e "\nUso: $0 [canta|dracula|cloudy]\n"
   exit 1
 fi
