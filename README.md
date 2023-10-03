@@ -16,6 +16,12 @@ Aqui un lista de las distintas acciones del programa:
 
 # Uso
 
+Primero hay que cambiar los permisos del script
+
+```bash
+chmod +x install.sh
+```
+
 ```bash
 ./install.sh [dracula|canta|cloudy]
 ```
