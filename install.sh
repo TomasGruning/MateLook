@@ -2,23 +2,15 @@
 chmod +x "$0"
 
 # Verifica que se haya proporcionado un argumento válido
-if [ "$#" -ne 1 ] || ([ "$1" != "canta" ] && [ "$1" != "dracula" ] && [ "$1" != "cloudy" ]); then
+if [ "$#" -ne 2 ] || ([ "$1" != "canta" ] && [ "$1" != "dracula" ] && [ "$1" != "cloudy" ]); then
   echo -e "\nUso: $0 [canta|dracula|cloudy]\n"
   exit 1
 fi
 
-set=false
-
-while [[ "$#" -gt 0 ]]; do
-  case $1 in
-    -s)
-      set=true
-      ;;
-    *)
-      ;;
-  esac
-  shift
-done
+set=$false
+if ["$2" == "-s" ]; then
+  set=$true
+fi
 
 # Función para descargar e instalar la fuente Fira Code
 instalar_fira_code() {
@@ -48,7 +40,7 @@ instalar_extensiones_vscode() {
     echo -e "\n"
   done
 
-  echo -e " \nExtensiones instaladas\n"
+  echo -e " Extensiones instaladas\n\n"
 }
 
 # Asigna valores según la opción seleccionada
@@ -68,8 +60,8 @@ elif [ "$1" == "dracula" ]; then
   
 elif [ "$1" == "cloudy" ]; then
   library="Cloudy"
-  icons_color="grey"
   gtk="Cloudy-Solid-Grey-Dark"
+  icons_color="grey"
   cursor="capitaine-cursors-light-r3"
   new_color_theme="Monokai +Graphite"
 
@@ -82,16 +74,16 @@ rm -f ~/Descargas/Mars.jar
 # Resto del script (código para configurar temas, íconos, fondos, etc.)
 
 # Instala el paquete de iconos
-if ["$set" = false]; then
+if [ !$set ]; then
   wget -qO- https://git.io/papirus-icon-theme-install | DESTDIR="$HOME/.icons" sh
   wget -qO- https://git.io/papirus-folders-install | env PREFIX=$HOME/.local sh
 fi
 bash /home/estudiantes/.local/bin/papirus-folders -C "$icons_color"
 
-cp "$(dirname "$0")/$library/$gtk" ~/.themes
-cp "$(dirname "$0")/$library/$cursor" ~/.icons
+cp -R "$(dirname "$0")/$library/$gtk" ~/.themes
+cp -R "$(dirname "$0")/$library/$cursor" ~/.icons
 
-if ["$set" = false]; then
+if [ !$set ]; then
   instalar_fira_code
 fi
 
@@ -114,7 +106,7 @@ dconf write /org/mate/terminal/profiles/default/cursor-shape "'ibeam'"
 dconf write /org/mate/terminal/profiles/default/scrollbar-position "'hidden'"
 echo -e " Terminal Configurada\n\n"
 
-if ["$set" = false]; then
+if [ !$set ]; then
   instalar_extensiones_vscode
 fi
 
