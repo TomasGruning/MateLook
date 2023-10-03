@@ -75,7 +75,7 @@ rm -f ~/Descargas/Mars.jar
 # Resto del script (código para configurar temas, íconos, fondos, etc.)
 
 # Instala el paquete de iconos
-if [ $set ]; then
+if [ !$set ]; then
   wget -qO- https://git.io/papirus-icon-theme-install | DESTDIR="$HOME/.icons" sh
   wget -qO- https://git.io/papirus-folders-install | env PREFIX=$HOME/.local sh
 fi
@@ -84,7 +84,7 @@ bash /home/estudiantes/.local/bin/papirus-folders -C "$icons_color"
 cp -R "$(dirname "$0")/$library/$gtk" ~/.themes
 cp -R "$(dirname "$0")/$library/$cursor" ~/.icons
 
-if [ $set ]; then
+if [ !$set ]; then
   instalar_fira_code
 fi
 
@@ -93,7 +93,6 @@ gsettings set org.mate.interface gtk-theme "$gtk"
 gsettings set org.mate.Marco.general theme "$gtk"
 gsettings set org.mate.interface icon-theme "Papirus-Dark"
 sed -i "s|^Icon=.*|Icon=/home/estudiantes/.icons/Papirus-Dark/128x128/places/folder-backup.svg|" /home/estudiantes/Escritorio/DATOS.desktop
-sed -i "s|^Icon=.*|Icon=/home/estudiantes/.icons/Papirus-Dark/128x128/places/folder-backup.svg|" /home/estudiantes/Escritorio/DATOS
 gsettings set org.mate.peripherals-mouse cursor-theme "$cursor"
 
 # Aplica el fondo de pantalla
@@ -108,7 +107,7 @@ dconf write /org/mate/terminal/profiles/default/cursor-shape "'ibeam'"
 dconf write /org/mate/terminal/profiles/default/scrollbar-position "'hidden'"
 echo -e "\n Terminal Configurada\n\n"
 
-if [ $set ]; then
+if [ !$set ]; then
   instalar_extensiones_vscode
 fi
 
