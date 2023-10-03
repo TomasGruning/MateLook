@@ -7,6 +7,19 @@ if [ "$#" -ne 1 ] || ([ "$1" != "canta" ] && [ "$1" != "dracula" ] && [ "$1" != 
   exit 1
 fi
 
+set=false
+
+while [[ "$#" -gt 0 ]]; do
+  case $1 in
+    -s)
+      set=true
+      ;;
+    *)
+      ;;
+  esac
+  shift
+done
+
 # Función para descargar e instalar la fuente Fira Code
 instalar_fira_code() {
   local fira_code_url="https://github.com/tonsky/FiraCode/releases/download/5.2/Fira_Code_v5.2.zip"
@@ -35,30 +48,26 @@ instalar_extensiones_vscode() {
     echo -e "\n"
   done
 
-  echo -e " Extensiones instaladas\n"
+  echo -e " \nExtensiones instaladas\n"
 }
-
-# ELimina basura
-rm -f ~/Escritorio/firefox_firefox.desktop
-rm -f ~/Descargas/Mars.jar
 
 # Asigna valores según la opción seleccionada
 if [ "$1" == "canta" ]; then
-  library="Canta.zip"
+  library="Canta"
   gtk="Canta-dark"
   icons_color="green"
   cursor="oreo-spark-green-cursors"
   new_color_theme="Monokai +Green"
 
 elif [ "$1" == "dracula" ]; then
-  library="Dracula.zip"
+  library="Dracula"
   gtk="Dracula-alt-style"
   icons_color="indigo"
   cursor="Dracula-cursors"
   new_color_theme="Monokai +Purple"
   
 elif [ "$1" == "cloudy" ]; then
-  library="Cloudy.zip"
+  library="Cloudy"
   icons_color="grey"
   gtk="Cloudy-Solid-Grey-Dark"
   cursor="capitaine-cursors-light-r3"
@@ -66,18 +75,25 @@ elif [ "$1" == "cloudy" ]; then
 
 fi
 
+# ELimina basura
+rm -f ~/Descargas/Mars.jar
+
+
 # Resto del script (código para configurar temas, íconos, fondos, etc.)
 
 # Instala el paquete de iconos
-wget -qO- https://git.io/papirus-icon-theme-install | DESTDIR="$HOME/.icons" sh
-wget -qO- https://git.io/papirus-folders-install | env PREFIX=$HOME/.local sh
+if ["$set" = false]; then
+  wget -qO- https://git.io/papirus-icon-theme-install | DESTDIR="$HOME/.icons" sh
+  wget -qO- https://git.io/papirus-folders-install | env PREFIX=$HOME/.local sh
+fi
 bash /home/estudiantes/.local/bin/papirus-folders -C "$icons_color"
 
-unzip -q $library
-mv "$(dirname "$0")/$gtk" ~/.themes
-mv "$(dirname "$0")/$cursor" ~/.icons
+cp "$(dirname "$0")/$library/$gtk" ~/.themes
+cp "$(dirname "$0")/$library/$cursor" ~/.icons
 
-instalar_fira_code
+if ["$set" = false]; then
+  instalar_fira_code
+fi
 
 # Aplica el tema
 gsettings set org.mate.interface gtk-theme "$gtk"
@@ -87,8 +103,8 @@ sed -i "s|^Icon=.*|Icon=/home/estudiantes/.icons/Papirus-Dark/128x128/places/fol
 gsettings set org.mate.peripherals-mouse cursor-theme "$cursor"
 
 # Aplica el fondo de pantalla
-mv "$(dirname "$0")/wallpaper.png" ~/Imágenes
-gsettings set org.mate.background picture-filename ~/Imágenes/wallpaper.png
+cp "$(dirname "$0")/$library/$library.png" ~/Imágenes
+gsettings set org.mate.background picture-filename ~/Imágenes/"$library".png
 
 # Configura la terminal
 dconf write /org/mate/terminal/profiles/default/use-custom-default-size 'true'
@@ -96,9 +112,11 @@ dconf write /org/mate/terminal/profiles/default/default-size-columns 106
 dconf write /org/mate/terminal/profiles/default/default-size-rows 29
 dconf write /org/mate/terminal/profiles/default/cursor-shape "'ibeam'"
 dconf write /org/mate/terminal/profiles/default/scrollbar-position "'hidden'"
-echo -e " Terminal Configurada\n"
+echo -e " Terminal Configurada\n\n"
 
-instalar_extensiones_vscode
+if ["$set" = false]; then
+  instalar_extensiones_vscode
+fi
 
 # Aplica las configuraciones de VS_Code
 cp "$(dirname "$0")/settings.json" ~/.config/Code/User
