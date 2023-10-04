@@ -3,17 +3,17 @@ chmod +x "$0"
 
 theme=canta
 set=0
-while getopts ":s:t:" option; do
+while getopts ":st:" option; do
   case $option in
     t)
       theme="$OPTARG"
       ;;
-    :)
+    s)
       set=1
       ;;
     *)
-      echo -e "\n\nUso: $0 [canta|dracula|cloudy] -t (elejir tema)"
-      echo -e "                                         -s (no descargar los recursos)\n"  
+      echo -e "\nUso: $0 -t [canta|dracula|cloudy]\n"
+      echo -e "\"                                      \" -s (para no descargar los recursos)\n\n" 
       exit 1
   esac
 done
@@ -21,8 +21,8 @@ shift $((OPTIND-1))
 
 # Verifica que se haya proporcionado un argumento válido
 if ([ "$theme" != "canta" ] && [ "$theme" != "dracula" ] && [ "$theme" != "cloudy" ]); then
-  echo -e "\nUso: $0 [canta|dracula|cloudy]\n"
-  echo -e "\"                                   \" -s (para no descargar los recursos)\n"  
+  echo -e "\nUso: $0 -t [canta|dracula|cloudy]\n"
+  echo -e "\"                                        \" -s (para no descargar los recursos)\n\n"  
   exit 1
 fi
 
