@@ -12,17 +12,17 @@ while getopts ":st:" option; do
       set=1
       ;;
     *)
-      echo -e "\nUso: $0 -t [canta|dracula|cloudy]\n"
-      echo -e "\"                                      \" -s (para no descargar los recursos)\n\n" 
+      echo -e "\nUso: $0 -t [canta|dracula|cloudy|blood]\n"
+      echo -e "\"                                               \" -s (para no descargar los recursos)\n\n" 
       exit 1
   esac
 done
 shift $((OPTIND-1))
 
 # Verifica que se haya proporcionado un argumento válido
-if ([ "$theme" != "canta" ] && [ "$theme" != "dracula" ] && [ "$theme" != "cloudy" ]); then
-  echo -e "\nUso: $0 -t [canta|dracula|cloudy]\n"
-  echo -e "\"                                        \" -s (para no descargar los recursos)\n\n"  
+if ([ "$theme" != "canta" ] && [ "$theme" != "dracula" ] && [ "$theme" != "cloudy" ] && [ "$theme" != "blood" ]); then
+  echo -e "\nUso: $0 -t [canta|dracula|cloudy|blood]\n"
+  echo -e "\"                                               \" -s (para no descargar los recursos)\n\n"  
   exit 1
 fi
 
@@ -72,6 +72,13 @@ elif [ "$theme" == "cloudy" ]; then
   cursor="capitaine-cursors-light-r3"
   new_color_theme="Monokai +Graphite"
 
+elif [ "$theme" == "blood" ]; then
+  library="Vimix"
+  gtk="vimix-dark-ruby"
+  icons_color="red"
+  cursor="oreo_spark_red_cursors"
+  new_color_theme="Monokai +Red"
+
 else
   library="Canta"
   gtk="Canta-dark"
@@ -118,7 +125,7 @@ dconf write /org/mate/terminal/profiles/default/default-size-columns 106
 dconf write /org/mate/terminal/profiles/default/default-size-rows 29
 dconf write /org/mate/terminal/profiles/default/cursor-shape "'ibeam'"
 dconf write /org/mate/terminal/profiles/default/scrollbar-position "'hidden'"
-echo -e "\n Terminal Configurada\n\n"
+echo -e "\n Terminal Configurada\n"
 
 if [ $set == 0 ]; then
   instalar_extensiones_vscode
