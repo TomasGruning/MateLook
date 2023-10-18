@@ -4,6 +4,7 @@ La idea de este repositorio es configurar la apariencia del excritorio de Ubuntu
 
 > [!WARNING]
 > No cambiar el nombre de ningun archivo ni carpeta para el correcto funcionamiento
+>
 > Nesecita tener instalado _python3_
 
 # Caracteristicas
@@ -25,7 +26,7 @@ chmod +x install.sh
 Por defecto se instala el tema _Canta_, se puede cambiar con la flag `-t`
 
 ```bash
-./install.sh -t [dracula|canta|cloudy]
+./install.sh -t [ dracula|canta|cloudy|blood|shine ]
 ```
 
 > [!NOTE]
