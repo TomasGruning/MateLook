@@ -5,24 +5,25 @@ theme=canta
 set=0
 while getopts ":st:" option; do
   case $option in
-    t)
-      theme="$OPTARG"
-      ;;
-    s)
-      set=1
-      ;;
-    *)
-      echo -e "\nUso: $0 -t [canta|dracula|cloudy|blood]\n"
-      echo -e "\"                                               \" -s (para no descargar los recursos)\n\n" 
-      exit 1
+  t)
+    theme="$OPTARG"
+    ;;
+  s)
+    set=1
+    ;;
+  *)
+    echo -e "\nUso: $0 -t [ canta|dracula|cloudy|blood|shine ]\n"
+    echo -e "\"                                                       \" -s (para no descargar los recursos)\n\n"
+    exit 1
+    ;;
   esac
 done
-shift $((OPTIND-1))
+shift $((OPTIND - 1))
 
 # Verifica que se haya proporcionado un argumento válido
-if ([ "$theme" != "canta" ] && [ "$theme" != "dracula" ] && [ "$theme" != "cloudy" ] && [ "$theme" != "blood" ]); then
-  echo -e "\nUso: $0 -t [canta|dracula|cloudy|blood]\n"
-  echo -e "\"                                               \" -s (para no descargar los recursos)\n\n"  
+if ([ "$theme" != "canta" ] && [ "$theme" != "dracula" ] && [ "$theme" != "cloudy" ] && [ "$theme" != "blood" ] && [ "$theme" != "shine" ]); then
+  echo -e "\nUso: $0 -t [ canta|dracula|cloudy|blood|shine ]\n"
+  echo -e "\"                                                       \" -s (para no descargar los recursos)\n\n"
   exit 1
 fi
 
@@ -46,8 +47,9 @@ instalar_fira_code() {
 
 instalar_extensiones_vscode() {
   local extensions=("PKief.material-icon-theme" "tw.monokai-accent" "usernamehw.errorlens"
-                    "DEVSENSE.phptools-vscode" "ecmel.vscode-html-css" "formulahendry.auto-close-tag"
-                    "formulahendry.auto-rename-tag" "ritwickdey.LiveServer" "justusadam.language-haskell")
+    "DEVSENSE.phptools-vscode" "ecmel.vscode-html-css" "formulahendry.auto-close-tag"
+    "formulahendry.auto-rename-tag" "ritwickdey.LiveServer" "justusadam.language-haskell"
+    "foxundermoon.shell-format")
 
   for extension in "${extensions[@]}"; do
     code --install-extension "$extension"
@@ -64,7 +66,7 @@ if [ "$theme" == "dracula" ]; then
   icons_color="indigo"
   cursor="Dracula-cursors"
   new_color_theme="Monokai +Purple"
-  
+
 elif [ "$theme" == "cloudy" ]; then
   library="Cloudy"
   gtk="Cloudy-Solid-Grey-Dark"
@@ -79,6 +81,13 @@ elif [ "$theme" == "blood" ]; then
   cursor="oreo_spark_red_cursors"
   new_color_theme="Monokai +Red"
 
+elif [ "$theme" == "shine" ]; then
+  library="Orchis"
+  gtk="Orchis-Yellow-Dark"
+  icons_color="yellow"
+  cursor="oreo_spark_lime_cursors"
+  new_color_theme="Monokai +Yellow"
+
 else
   library="Canta"
   gtk="Canta-dark"
@@ -91,15 +100,14 @@ fi
 # ELimina basura
 rm -f ~/Descargas/Mars.jar
 
-
 # Resto del script (código para configurar temas, íconos, fondos, etc.)
 
 # Instala el paquete de iconos
 if [ $set == 0 ]; then
   wget -qO- https://git.io/papirus-icon-theme-install | DESTDIR="$HOME/.icons" sh
-  wget -qO- https://git.io/papirus-folders-install | env PREFIX=$HOME/.local sh
 fi
-bash /home/estudiantes/.local/bin/papirus-folders -C "$icons_color"
+wget -qO- https://git.io/papirus-folders-install | env PREFIX=$HOME/.local sh
+bash /home/estudiantes/.local/bin/papirus-folders -u -C "$icons_color"
 
 cp -R "$(dirname "$0")/$library/$gtk" ~/.themes
 cp -R "$(dirname "$0")/$library/$cursor" ~/.icons
