@@ -12,8 +12,8 @@ while getopts ":st:" option; do
     set=1
     ;;
   *)
-    echo -e "\nUso: $0 -t [ canta|dracula|cloudy|blood|shine ]\n"
-    echo -e "\"                                                       \" -s (para no descargar los recursos)\n\n"
+    echo -e "\nUso: $0 -t [ canta|dracula|cloudy|blood|ocean|shine ]\n"
+    echo -e "\"                                                             \" -s (para no descargar los recursos)\n\n"
     exit 1
     ;;
   esac
@@ -21,9 +21,9 @@ done
 shift $((OPTIND - 1))
 
 # Verifica que se haya proporcionado un argumento válido
-if ([ "$theme" != "canta" ] && [ "$theme" != "dracula" ] && [ "$theme" != "cloudy" ] && [ "$theme" != "blood" ] && [ "$theme" != "shine" ]); then
-  echo -e "\nUso: $0 -t [ canta|dracula|cloudy|blood|shine ]\n"
-  echo -e "\"                                                       \" -s (para no descargar los recursos)\n\n"
+if ([ "$theme" != "canta" ] && [ "$theme" != "dracula" ] && [ "$theme" != "cloudy" ] && [ "$theme" != "blood" ] && [ "$theme" != "shine" ] && [ "$theme" != "ocean" ]); then
+  echo -e "\nUso: $0 -t [ canta|dracula|cloudy|blood|ocean|shine ]\n"
+  echo -e "\"                                                             \" -s (para no descargar los recursos)\n\n"
   exit 1
 fi
 
@@ -80,6 +80,13 @@ elif [ "$theme" == "blood" ]; then
   cursor="oreo_spark_red_cursors"
   new_color_theme="Monokai +Red"
 
+elif [ "$theme" == "ocean" ]; then
+  library="Fluent"
+  gtk="Fluent-round-Dark"
+  icons_color="blue"
+  cursor="oreo_spark_blue_cursors"
+  new_color_theme="Monokai +Blue"
+
 elif [ "$theme" == "shine" ]; then
   library="Orchis"
   gtk="Orchis-Yellow-Dark"
@@ -121,6 +128,7 @@ gsettings set org.mate.Marco.general theme "$gtk"
 gsettings set org.mate.interface icon-theme "Papirus-Dark"
 sed -i "s|^Icon=.*|Icon=/home/estudiantes/.icons/Papirus-Dark/128x128/places/folder-backup.svg|" /home/estudiantes/Escritorio/DATOS.desktop
 gsettings set org.mate.peripherals-mouse cursor-theme "$cursor"
+mate-panel --replace &
 
 # Aplica el fondo de pantalla
 cp "$(dirname "$0")/$library/$library.png" ~/Imágenes

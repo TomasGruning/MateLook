@@ -26,7 +26,7 @@ chmod +x install.sh
 Por defecto se instala el tema _Canta_, se puede cambiar con la flag `-t`
 
 ```bash
-./install.sh -t [ dracula|canta|cloudy|blood|shine ]
+./install.sh -t [ dracula|canta|cloudy|blood|ocean|shine ]
 ```
 
 > [!NOTE]
