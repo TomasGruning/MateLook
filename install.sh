@@ -48,8 +48,7 @@ instalar_fira_code() {
 instalar_extensiones_vscode() {
   local extensions=("PKief.material-icon-theme" "tw.monokai-accent" "usernamehw.errorlens"
     "DEVSENSE.phptools-vscode" "ecmel.vscode-html-css" "formulahendry.auto-close-tag"
-    "formulahendry.auto-rename-tag" "ritwickdey.LiveServer" "justusadam.language-haskell"
-    "foxundermoon.shell-format")
+    "formulahendry.auto-rename-tag" "ritwickdey.LiveServer" "justusadam.language-haskell")
 
   for extension in "${extensions[@]}"; do
     code --install-extension "$extension"
@@ -105,8 +104,8 @@ rm -f ~/Descargas/Mars.jar
 # Instala el paquete de iconos
 if [ $set == 0 ]; then
   wget -qO- https://git.io/papirus-icon-theme-install | DESTDIR="$HOME/.icons" sh
+  wget -qO- https://git.io/papirus-folders-install | env PREFIX=$HOME/.local sh
 fi
-wget -qO- https://git.io/papirus-folders-install | env PREFIX=$HOME/.local sh
 bash /home/estudiantes/.local/bin/papirus-folders -u -C "$icons_color"
 
 cp -R "$(dirname "$0")/$library/$gtk" ~/.themes
@@ -127,15 +126,15 @@ gsettings set org.mate.peripherals-mouse cursor-theme "$cursor"
 cp "$(dirname "$0")/$library/$library.png" ~/Imágenes
 gsettings set org.mate.background picture-filename ~/Imágenes/"$library".png
 
-# Configura la terminal
-dconf write /org/mate/terminal/profiles/default/use-custom-default-size 'true'
-dconf write /org/mate/terminal/profiles/default/default-size-columns 106
-dconf write /org/mate/terminal/profiles/default/default-size-rows 29
-dconf write /org/mate/terminal/profiles/default/cursor-shape "'ibeam'"
-dconf write /org/mate/terminal/profiles/default/scrollbar-position "'hidden'"
-echo -e "\n Terminal Configurada\n"
-
 if [ $set == 0 ]; then
+  # Configura la terminal
+  dconf write /org/mate/terminal/profiles/default/use-custom-default-size 'true'
+  dconf write /org/mate/terminal/profiles/default/default-size-columns 106
+  dconf write /org/mate/terminal/profiles/default/default-size-rows 29
+  dconf write /org/mate/terminal/profiles/default/cursor-shape "'ibeam'"
+  dconf write /org/mate/terminal/profiles/default/scrollbar-position "'hidden'"
+  echo -e "\n Terminal Configurada\n"
+
   instalar_extensiones_vscode
 fi
 
