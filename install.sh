@@ -1,33 +1,55 @@
 #!/bin/bash
 chmod +x "$0"
 
-theme=canta
-set=0
-while getopts ":st:" option; do
-  case $option in
-  t)
-    theme="$OPTARG"
-    ;;
-  s)
-    set=1
-    ;;
-  *)
-    echo -e "\nUso: $0 -t [ canta|dracula|cloudy|blood|ocean|shine ]\n"
-    echo -e "\"                                                             \" -s (para no descargar los recursos)\n\n"
-    exit 1
-    ;;
-  esac
-done
-shift $((OPTIND - 1))
+msg() {
+	printf "\n%s: %b\n" "$PROGNAME" "$*"
+}
+err() {
+	msg "Error:" "$*" >&2
+}
 
-# Verifica que se haya proporcionado un argumento válido
-if ([ "$theme" != "canta" ] && [ "$theme" != "dracula" ] && [ "$theme" != "cloudy" ] && [ "$theme" != "blood" ] && [ "$theme" != "shine" ] && [ "$theme" != "ocean" ]); then
-  echo -e "\nUso: $0 -t [ canta|dracula|cloudy|blood|ocean|shine ]\n"
-  echo -e "\"                                                             \" -s (para no descargar los recursos)\n\n"
-  exit 1
-fi
+usage() {
+	printf '\n'
+  cat <<- EOF
+	USAGE
+	  $ $PROGNAME [options] -t <theme> 
 
-# Función para descargar e instalar la fuente Fira Code
+	OPERATIONS
+	  -t --theme <theme>  specify the theme
+
+	OPTIONS
+	  -s --set           set the theme without re-installing the resources
+    -l --list          list availables themes 
+	EOF
+  printf '\n'
+
+	exit "${1:-0}"
+}
+
+list_themes() {
+  local -a themes=("canta" "dracula" "cloudy" "blood" "shine" "ocean")
+  
+  printf '\n'
+  for theme in "${themes[@]}"; do
+		printf ' %s\n' "$theme"
+	done
+  printf '\n'
+
+  exit 0
+}
+
+is_valid_theme() {
+  local -a themes=("canta" "dracula" "cloudy" "blood" "shine" "ocean")
+  local theme="$1"
+  
+  for i in "${themes[@]}"; do
+		[ "$i" == "$theme" ] || continue
+		return 0
+	done
+
+  return 1
+}
+
 instalar_fira_code() {
   local fira_code_url="https://github.com/tonsky/FiraCode/releases/download/5.2/Fira_Code_v5.2.zip"
   local fira_code_zip="Fira_Code.zip"
@@ -56,6 +78,41 @@ instalar_extensiones_vscode() {
   done
 
   echo -e " Extensiones instaladas\n\n"
+}
+
+theme=canta
+set=0
+list=0
+
+while getopts ":slht:" option; do
+  case $option in
+  t)
+    theme="$OPTARG"
+    ;;
+  l)
+    list=1
+    ;;
+  s)
+    set=1
+    ;;
+  h ) usage 0 ;;
+	: ) err "option requires an argument -- '-$OPTARG'"
+		usage 2
+		;;
+	\?) err "illegal option -- '-$OPTARG'"
+		usage 2
+		;;
+  esac
+done
+shift $((OPTIND - 1))
+
+if [ "$list" == 1 ]; then
+  list_themes
+fi
+
+# Verifica que se haya proporcionado un argumento válido
+is_valid_theme "$theme" || {
+  msg "'$theme' not found. Using default 'canta'"
 }
 
 # Asigna valores según la opción seleccionada
