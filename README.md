@@ -27,7 +27,8 @@ OPERATIONS
     -t --theme <theme>  specify the theme
 
 OPTIONS
-	-s --set           set the theme without re-installing the resources
+	-h --help          show this page
+    -s --set           set the theme without re-installing the resources
     -l --list          list availables themes 
 ```
 
