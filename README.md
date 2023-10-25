@@ -18,16 +18,27 @@ Aqui un lista de las distintas acciones del programa:
 
 # Uso
 
-Primero hay que cambiar los permisos del script
 
 ```bash
-chmod +x install.sh
-```
-Por defecto se instala el tema _Canta_, se puede cambiar con la flag `-t`
+USAGE
+    $ ./install.sh [options] -t <theme> 
 
-```bash
-./install.sh -t [ dracula|canta|cloudy|blood|ocean|shine ]
+OPERATIONS
+    -t --theme <theme>  specify the theme
+
+OPTIONS
+	-s --set           set the theme without re-installing the resources
+    -l --list          list availables themes 
 ```
 
 > [!NOTE]
->Se puede agregar el argumento `-s` para no volver a instalar de vuelta los recursos 
+> Por defecto se instala el tema _Canta_
+>
+
+# Temas
+ * __Canta__
+ * __Dracula__
+ * __Cloudy__
+ * __Blood__
+ * __Shine__
+ * __Ocean__

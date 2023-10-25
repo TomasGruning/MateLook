@@ -2,7 +2,7 @@
 chmod +x "$0"
 
 msg() {
-	printf "\n%s: %b\n" "$PROGNAME" "$*"
+	printf "\n%s: %b\n" "$0" "$*"
 }
 err() {
 	msg "Error:" "$*" >&2
@@ -12,14 +12,15 @@ usage() {
 	printf '\n'
   cat <<- EOF
 	USAGE
-	  $ $PROGNAME [options] -t <theme> 
+	  $ $0 [options]
+  $ $0 [options] -t <theme> 
 
 	OPERATIONS
 	  -t --theme <theme>  specify the theme
 
 	OPTIONS
 	  -s --set           set the theme without re-installing the resources
-    -l --list          list availables themes 
+  -l --list          list availables themes 
 	EOF
   printf '\n'
 
@@ -83,32 +84,49 @@ instalar_extensiones_vscode() {
 theme=canta
 set=0
 list=0
+args=()
+
+for arg; do
+	case "$arg" in
+		--help)           args+=( -h ) ;;
+		--list)           args+=( -l ) ;;
+		--theme)          args+=( -t ) ;;
+    --set)          args+=( -s ) ;;
+		--[0-9a-zA-Z]*)
+			err "illegal option -- '$arg'"
+			usage 2
+			;;
+		*) args+=("$arg")
+	esac
+done
+
+set -- "${args[@]}"  
 
 while getopts ":slht:" option; do
   case $option in
   t)
     theme="$OPTARG"
     ;;
-  l)
-    list=1
+  l|--list)
+    list_themes
     ;;
   s)
     set=1
     ;;
-  h ) usage 0 ;;
-	: ) err "option requires an argument -- '-$OPTARG'"
+  h ) 
+    usage 0 
+    ;;
+	: ) 
+    err "option requires an argument -- '-$OPTARG'"
 		usage 2
 		;;
-	\?) err "illegal option -- '-$OPTARG'"
+	\?) 
+    err "illegal option -- '-$OPTARG'"
 		usage 2
 		;;
   esac
 done
 shift $((OPTIND - 1))
-
-if [ "$list" == 1 ]; then
-  list_themes
-fi
 
 # Verifica que se haya proporcionado un argumento válido
 is_valid_theme "$theme" || {
