@@ -1,6 +1,6 @@
 # Script para configurar Ubuntu Mate y VS-Code
 
-La idea de este repositorio es configurar la apariencia del excritorio de Ubuntu Mate y la configuracion de VS-Code.
+La idea de este repositorio es configurar la apariencia del escritorio de Ubuntu Mate y la configuracion de VS-Code.
 
 > [!WARNING]
 > No cambiar el nombre de ningun archivo ni carpeta para el correcto funcionamiento
@@ -27,7 +27,7 @@ OPERATIONS
     -t --theme <theme>  specify the theme
 
 OPTIONS
-	-h --help          show this page
+    -h --help          show this page
     -s --set           set the theme without re-installing the resources
     -l --list          list availables themes 
 ```
